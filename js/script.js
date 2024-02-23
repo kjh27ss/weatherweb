@@ -1,9 +1,37 @@
 const mon = ["일", "월", "화", "수", "목", "금", "토"];
 const enmon =["SUN","MON","TUE","WED","THU","FRI","SAT"];
 $(function(){
-  let city = "gimpo-si";
-  //url = api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-  const url = "//api.openweathermap.org/data/2.5/forecast";
+  let city = "";
+  weathers("gimpo-si");
+  $(".now-time").html(newTime());
+  $("#searchcity").on("keypress", function(e){
+    if(e.which == 13 && !e.shiftkey){
+      const cityname = $('#searchcity').val();
+      if(cityname){
+        weathers(cityname);
+      }else{
+        alert("도시이름을 입력하세요.");
+        return;
+      }
+      $(this).val('');
+    }
+  });
+
+  $('#searchbtn').on('click', function(e){
+    e.preventDefault();
+    const cityname = $('#searchcity').val();
+    if(cityname){
+      weathers(cityname);
+      $('#searchcity').val('');
+    }else{
+      alert("도시이름을 입력하세요.");
+      return;
+    }
+  });
+});
+
+  const url1 = "//api.openweathermap.org/data/2.5/forecast";
+  const url2 = "//api.openweathermap.org/data/2.5/air_pollution";
   const wdata = {
      q: city ,
      appid: "61817fe9871c5ce196a7b67a92ce3a6b",
@@ -17,8 +45,11 @@ $(function(){
     data: wdata,
     success: function(data){
        console.log(data);
+       const lat = data.city.coord.lat;
+       const lon = data.city.coord.lon;
        const dt = data.list;
        let phone = "";
+
        for(let i =0; i < dt.length; i++){
 
           //유닉스 => 일반  -->  Number(유닉스타임) * 1000
@@ -60,10 +91,6 @@ $(function(){
           const weatherMonth = weatherDate.getMonth() + 1;
           const weatherDt = weatherDate.getDate();
           const weatherDay = enmon[weatherDate.getDay()];
-          
-          
-         
-         
           const weatherHours = weatherDate.getHours();
           // console.log( weatherYear +" " + weatherMonth +" " + weatherDt+" " + weatherDay + " " + weatherHours + "시");
           let icn = getWeatherIcon(dt[i].weather[0].icon);
@@ -71,7 +98,7 @@ $(function(){
           if(i % 2 == 1){
             pup = "pup";
           }
-          phone += `<div class="mobile-phone '+pup+'"> 
+          phone += `<div class="mobile-phone ${pup}"> 
                       <div class="top d-flex justify-content-between align-items-center"> 
                         <i class="ri-menu-line"></i> 
                         <p class="mobile-date">${weatherYear}년${weatherMonth}월${weatherDt}일${weatherDay+1 }${weatherHours}시</p> 
@@ -124,51 +151,59 @@ $(function(){
                           </div> 
                       </div> 
                   </div><!--/mobile-phone-->`;
+      
+        switch(i){
+          case 1:
+        
+        city += `
+        <tr>
+            <th>도시명</th>
+            <td>${data.city.name}</td>
+            <td>날씨</td>
+            <td><i class="wi ${icon1}"></i></td>
+        </tr>
+        <tr>
+            <th>날씨상세</th>
+            <td>${dt[i].weather[0].description}</td>
+            <td>현재온도 / 체감온도</td>
+            <td>${Math.round(dt[i].main.temp)}℃ <span>/</span>${Math.round(dt[i].main.feels_like)}℃</td>
+        </tr>
+
+        <tr>
+            <th>습도</th>
+            <td>김포시</td>
+            <td>현재온도</td>
+            <td><i class="ri-menu-line"></i>맑음</td>
+        </tr>
+
+        <tr>
+            <th>가시거리</th>
+            <td>김포시</td>
+            <td>현재온도</td>
+            <td><i class="ri-menu-line"></i>맑음</td>
+        </tr>
+        <tr>
+            <th>풍향</th>
+            <td>김포시</td>
+            <td>현재온도</td>
+            <td><i class="ri-menu-line"></i>맑음</td>
+        </tr>
+
+        <tr>
+            <th>해뜨는 시각</th>
+            <td>김포시</td>
+            <td>현재온도</td>
+            <td><i class="ri-menu-line"></i>맑음</td>
+        </tr>
 
 
-        city += `<tr>
-                  <th>도시명</th>
-                  <td>${city.name}</td>
-                  <td>현재온도(체감온도)</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>
-              <tr>
-                  <th>최저온도</th>
-                  <td>${dt[i].main.temp_min}</td>
-                  <td>현재온도</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>
-
-              <tr>
-                  <th>습도</th>
-                  <td>김포시</td>
-                  <td>현재온도</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>
-
-              <tr>
-                  <th>가시거리</th>
-                  <td>김포시</td>
-                  <td>현재온도</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>
-              <tr>
-                  <th>풍향</th>
-                  <td>김포시</td>
-                  <td>현재온도</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>
-
-              <tr>
-                  <th>해뜨는 시각</th>
-                  <td>김포시</td>
-                  <td>현재온도</td>
-                  <td><i class="ri-menu-line"></i>맑음</td>
-              </tr>`;
- 
+    `;
+    break;
+        }     
         }
         destoryCarousel();
         $('.weather-slick').html(phone);
+        $('.area-weather').html(city);
         applySlider();
       },
     error: function(xhr, status, error){
