@@ -160,13 +160,13 @@ function weathers(city){
         city += `<tr>
                                 <th>도시명</th>
                                 <td>${data.city.name}</td>
-                                <td>날씨</td>
+                                <th>날씨</th>
                                 <td><i class="wi ${icon1}"></i></td>
                             </tr>
                             <tr>
                                 <th>날씨상세</th>
                                 <td>${dt[i].weather[0].description}</td>
-                                <td>현재온도 / 체감온도</td>
+                                <th>현재온도 / 체감온도</th>
                                 <td>${Math.round(dt[i].main.temp)}℃
                                   <span>/</span>
                                   ${Math.round(dt[i].main.feels_like)}℃
