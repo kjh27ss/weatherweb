@@ -226,7 +226,7 @@ function weathers(city){
           data: adata,
           success: function(data){
             console.log(data);
-            const num = parseInt(data.list[0].main.api);
+            const num = parseInt(data.list[0].main.aqi);
             $('#aqi').text(st[num-1]);
             $('#co').text(data.list[0].components.co+"ppm");
             $('#no').text(data.list[0].components.no+"ppm");
