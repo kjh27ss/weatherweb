@@ -30,7 +30,9 @@ $(function(){
   });
 });
 
-  const url1 = "//api.openweathermap.org/data/2.5/forecast";
+function weathers(city){
+
+  const url = "//api.openweathermap.org/data/2.5/forecast";
   const url2 = "//api.openweathermap.org/data/2.5/air_pollution";
   const wdata = {
      q: city ,
@@ -98,128 +100,158 @@ $(function(){
           if(i % 2 == 1){
             pup = "pup";
           }
-          phone += `<div class="mobile-phone ${pup}"> 
-                      <div class="top d-flex justify-content-between align-items-center"> 
-                        <i class="ri-menu-line"></i> 
-                        <p class="mobile-date">${weatherYear}년${weatherMonth}월${weatherDt}일${weatherDay+1 }${weatherHours}시</p> 
-                      </div> 
-                      <div class="content"> 
-                          <h1 class="text-center today-city-name">${data.city.name}</h1> 
-                          <p class="text-center today-city-time">${weatherHours}시</p> 
-                          <div class="weatherbox d-flex align-items-center"> 
-                              <div class="col-6"> 
-                                  <i class="wi ${icn[0]}" style="color:${icn[1]}"></i> 
-                              </div> 
-                              <div class="col-6 today-temp"> 
-                                  ${Math.round(dt[i].main.temp)}<span>℃</span> 
-                              </div> 
-                          </div> 
-                          <div class="col-12 text-center mt-2 today-temp-arrow"> 
-                                <i class="ri-arrow-down-line"></i><span class="today-down-temp">${dt[i].main.temp_min}</span> 
-                                /  
-                                <i class="ri-arrow-up-line"></i><span class="today-up-temp">${dt[i].main.temp_max}</span> 
-                          </div> 
-                          <div class="col-12 mt-5 next-date temp-box-pr  
-                                      d-flex justify-content-between"> 
-                              <div class="temp-box"> 
-                                  <div class="next-temp"> 
-                                      <span>${weatherDay2}</span> 
-                                      <span>${next1Temp}</span> 
-                                  </div> 
-                                  <div class="next-icon"> 
-                                      <i class="wi ${icon1}" style="color:${color1}"></i> 
-                                  </div> 
-                              </div> 
-                              <div class="temp-box"> 
-                                  <div class="next-temp"> 
-                                      <span>${weatherDay3}</span> 
-                                      <span>${next2Temp}</span> 
-                                  </div> 
-                                  <div class="next-icon"> 
-                                      <i class="wi ${icon2}" style="color:${color2}"></i> 
-                                  </div> 
-                              </div> 
-                              <div class="temp-box"> 
-                                  <div class="next-temp"> 
-                                      <span>${weatherDay4}</span> 
-                                      <span>${next3Temp}</span> 
-                                  </div> 
-                                  <div class="next-icon"> 
-                                      <i class="wi ${icon3}" style="color:${color3}"></i> 
-                                  </div> 
-                              </div> 
-                          </div> 
-                      </div> 
-                  </div><!--/mobile-phone-->`;
+          phone += `<div class="mobile-phone ${pup}">
+                        <div class="top d-flex justify-content-between align-items-center">
+                          <i class="ri-menu-line"></i>
+                          <p class="mobile-date">${weatherYear}년 ${weatherMonth}월 ${weatherDt}일(${weatherDay}) ${weatherHours}시</p>
+                        </div>
+                        <div class="content">
+                            <h1 class="text-center today-city-name">${data.city.name}</h1>
+                            <p class="text-center today-city-time">${weatherHours}시</p>
+                            <div class="weatherbox d-flex align-items-center">
+                                <div class="col-6">
+                                    <i class="wi ${icn[0]}" style="color: ${icn[1]}"></i>
+                                </div>
+                                <div class="col-6 today-temp">
+                                    ${Math.round(dt[i].main.temp)}<span>℃</span>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center mt-2 today-temp-arrow">
+                                  <i class="ri-arrow-down-line"></i><span class="today-down-temp">${dt[i].main.temp_min}℃</span>
+                                  / 
+                                  <i class="ri-arrow-up-line"></i><span class="today-up-temp">${dt[i].main.temp_max}℃</span>
+                            </div>
+                            <div class="col-12 mt-5 next-date temp-box-pr 
+                                        d-flex justify-content-between">
+                                <div class="temp-box">
+                                    <div class="next-temp">
+                                        <span>${weatherDay2}</span>
+                                        <span>${next1Temp}℃</span>
+                                    </div>
+                                    <div class="next-icon">
+                                        <i class="wi ${icon1}" style="color:${color1}"></i>
+                                    </div>
+                                </div>
+                                <div class="temp-box">
+                                    <div class="next-temp">
+                                        <span>${weatherDay3}</span>
+                                        <span>${next2Temp}℃</span>
+                                    </div>
+                                    <div class="next-icon">
+                                    <i class="wi ${icon2}" style="color:${color2}"></i>
+                                    </div>
+                                </div>
+                                <div class="temp-box">
+                                    <div class="next-temp">
+                                        <span>${weatherDay4}</span>
+                                        <span>${next3Temp}℃</span>
+                                    </div>
+                                    <div class="next-icon">
+                                    <i class="wi ${icon3}" style="color:${color3}"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--/mobile-phone-->`;
       
         switch(i){
           case 1:
         
-        city += `
-        <tr>
-            <th>도시명</th>
-            <td>${data.city.name}</td>
-            <td>날씨</td>
-            <td><i class="wi ${icon1}"></i></td>
-        </tr>
-        <tr>
-            <th>날씨상세</th>
-            <td>${dt[i].weather[0].description}</td>
-            <td>현재온도 / 체감온도</td>
-            <td>${Math.round(dt[i].main.temp)}℃ <span>/</span>${Math.round(dt[i].main.feels_like)}℃</td>
-        </tr>
+        city += `<tr>
+                                <th>도시명</th>
+                                <td>${data.city.name}</td>
+                                <td>날씨</td>
+                                <td><i class="wi ${icon1}"></i></td>
+                            </tr>
+                            <tr>
+                                <th>날씨상세</th>
+                                <td>${dt[i].weather[0].description}</td>
+                                <td>현재온도 / 체감온도</td>
+                                <td>${Math.round(dt[i].main.temp)}℃
+                                  <span>/</span>
+                                  ${Math.round(dt[i].main.feels_like)}℃
+                                </td>
+                            </tr>
 
-        <tr>
-            <th>습도</th>
-            <td>김포시</td>
-            <td>현재온도</td>
-            <td><i class="ri-menu-line"></i>맑음</td>
-        </tr>
-
-        <tr>
-            <th>가시거리</th>
-            <td>김포시</td>
-            <td>현재온도</td>
-            <td><i class="ri-menu-line"></i>맑음</td>
-        </tr>
-        <tr>
-            <th>풍향</th>
-            <td>김포시</td>
-            <td>현재온도</td>
-            <td><i class="ri-menu-line"></i>맑음</td>
-        </tr>
-
-        <tr>
-            <th>해뜨는 시각</th>
-            <td>김포시</td>
-            <td>현재온도</td>
-            <td><i class="ri-menu-line"></i>맑음</td>
-        </tr>
-
-
-    `;
-    break;
-        }     
-        }
+                            <tr>
+                              <th>최저온도</th>
+                              <td>${Math.round(dt[i].main.temp_min)}℃</td>
+                              <th>최고온도</th>
+                              <td>${Math.round(dt[i].main.temp_max)}℃</td>
+                          </tr>
+                          <tr>
+                              <th>습도</th>
+                              <td>${dt[i].main.humidity}</td>
+                              <th>기압</th>
+                              <td>${dt[i].main.pressure}</td>
+                          </tr>
+                          <tr>
+                              <th>가시거리</th>
+                              <td>${dt[i].visibility}</td>
+                              <th>풍속</th>
+                              <td>${dt[i].wind.speed}</td>
+                          </tr>
+                          <tr>
+                              <th>풍향</th>
+                              <td>${dt[i].wind.deg}</td>
+                              <th>구름</th>
+                              <td>${dt[i].clouds.all}</td>
+                          </tr>
+                          <tr>
+                              <th>해뜨는 시각</th>
+                              <td>${data.city.sunrise}</td>
+                              <th>해지는 시각</th>
+                              <td>${data.city.sunset}</td>
+                          </tr>`;
+                        break;
+           }
+              
+          }
         destoryCarousel();
         $('.weather-slick').html(phone);
         $('.area-weather').html(city);
         applySlider();
+
+        const adata = {
+          lat : lat,
+          lon : lon,
+          appid : "61817fe9871c5ce196a7b67a92ce3a6b"
+        }
+
+        const st = ['GOOD', 'FAIR', 'MODERATE', 'POOR','VERY POOR'];
+        // 대기질 가져오기
+        $.ajax({
+          dataType:'json',
+          url : url2,
+          data: adata,
+          success: function(data){
+            console.log(data);
+            const num = parseInt(data.list[0].main.api);
+            $('#aqi').text(st[num-1]);
+            $('#co').text(data.list[0].components.co+"ppm");
+            $('#no').text(data.list[0].components.no+"ppm");
+            $('#no2').text(data.list[0].components.no2+"ppm");
+            $('#o3').text(data.list[0].components.o3+"ppm");
+            $('#so2').text(data.list[0].components.so2+"ppm");
+            $('#pm25').text(data.list[0].components.pm2_5+"ppm");
+            $('#pm10').text(data.list[0].components.pm10+"ppm");
+            $('#nh3').text(data.list[0].components.nh3+"ppm");
+          },
+          error:function(){
+
+          }
+        })
       },
     error: function(xhr, status, error){
-      // console.log( error);
+      console.log( error);
     }
   });
-
-
-
-
-
+}
 
   //slick
 function destoryCarousel(){
   if($('.weather-slick').hasClass('slick-initialized')){
-     $('.weather-slick').slick(unslick);
+     $('.weather-slick').slick('unslick');
   }
 }
 
@@ -236,10 +268,7 @@ function applySlider(){
 }
 
 
-  //현재 시간 표시
-  $(".now-time").html(newTime());
 
-}); //jquery
 
 function newTime(){
    let now = new Date();
